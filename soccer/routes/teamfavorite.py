@@ -110,7 +110,27 @@ def team_list_favorite():
             "has_next": false,
             "has_prev": false,
             "result": [
-
+                {
+                    "favorite_id": 1,
+                    "team": {
+                        "id": 1,
+                        "shortname": FCB,
+                        "fullname": Barcelona FC,
+                        "liga": {
+                            "id": 1,
+                            "name": La Liga,
+                            "nation": Spain,
+                            "image": asset.soccer-app...,
+                            "image_icon": asset.soccer-app...,
+                            "image_thumb": asset.soccer-app...,
+                        },
+                        "website": www.barcelona.com,
+                        "birthday": 1556789851,
+                        "image": asset.soccer-app...,
+                        "image_icon": asset.soccer-app...,
+                        "image_thumb": asset.soccer-app...,
+                    }
+                }
             ]
         }
 
@@ -129,9 +149,25 @@ def team_list_favorite():
     result = []
     for fav in teams_favorite.items:
         result.append({
-            "id": fav.team.id,
-            "name": fav.team.name,
-            "username": fav.team.
+            "favorite_id": fav.team.id,
+            "team": {
+                "id": fav.team.id,
+                "shortname": fav.team.shortname,
+                "fullname": fav.team.fullname,
+                "liga": {
+                    "id": fav.team.liga.id,
+                    "name": fav.team.liga.name,
+                    "nation": fav.team.liga.nation,
+                    "image": fav.team.liga.image_url,
+                    "image_icon": fav.team.liga.image_icon_url,
+                    "image_thumb": fav.team.liga.image_thumb_url,
+                },
+                "website": fav.team.website,
+                "birthday": fav.team.birthday,
+                "image": fav.team.image_url,
+                "image_icon": fav.team.image_icon_url,
+                "image_thumb": fav.team.image_thumb_url,
+            }
         })
 
     response = {
