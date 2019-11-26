@@ -1,11 +1,11 @@
 from flask import Blueprint, request, jsonify
 
-from soccer.controllers.user import favorite as favorite_ctrl
+from soccer.controllers import teamfavorite as teamfavorite_ctrl
 from soccer.exceptions import BadRequest
 from soccer.libs.ratelimit import ratelimit
 
 
-bp = Blueprint(__name__, "user_favorite")
+bp = Blueprint(__name__, "team_favorite")
 
 
 @bp.route("/team/favorite", methods=["POST"])
@@ -38,7 +38,7 @@ def team_favorite():
     if not team_id:
         raise BadRequest("team_id tidak boleh kosong")
 
-    favorite = favorite_ctrl.set_favorite(auth.user.id, team_id)
+    favorite = teamfavorite_ctrl.set_favorite(auth.user.id, team_id)
 
     response = {
         "status": 200,
@@ -77,7 +77,7 @@ def team_unfavorite():
     if not team_id:
         raise BadRequest("team_id tidak boleh kosong")
 
-    unfavorite = favorite_ctrl.set_unfavorite(auth.user.id, team_id)
+    unfavorite = teamfavorite_ctrl.set_unfavorite(auth.user.id, team_id)
 
     response = {
         "status": 200,
@@ -124,7 +124,7 @@ def team_list_favorite():
     page = int(page)
     count = int(count)
 
-    teams_favorite = favorite_ctrl.get_favorite(auth.user, page=page, count=count)
+    teams_favorite = teamfavorite_ctrl.get_favorite(auth.user, page=page, count=count)
 
     result = []
     for fav in teams_favorite.items:
