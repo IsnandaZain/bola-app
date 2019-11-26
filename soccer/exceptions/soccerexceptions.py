@@ -8,7 +8,7 @@ class SoccerException(Exception):
     status_code = 400
     payload = None
 
-    def __init__(self, message=None, status_code, payload=None):
+    def __init__(self, message=None, status_code=None, payload=None):
 
         if message is not None:
             self.message = message

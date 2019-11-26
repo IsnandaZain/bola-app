@@ -83,6 +83,6 @@ class SoccerDB(SQLAlchemy):
             raise Exception("Cannot drop_all except sqlite:///:memory:")
 
 
-db = CerminDB()
+db = SoccerDB()
 
 __all__ = [db]

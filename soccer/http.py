@@ -5,10 +5,9 @@ import time
 from flask import Flask, g, request, blueprints
 
 from soccer import models, events, metrics
-from soccer.exceptions.soccerexceptions import SuspendUser, BadRequest
+from soccer.exceptions.soccerexceptions import BadRequest
 from soccer.libs import ratelimit
 from soccer.libs.misc import walk_modules
-from soccer.models import UserTokens
 from configuration import SoccerConfig
 
 log = logging.getLogger(__name__)

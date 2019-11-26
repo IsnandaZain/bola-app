@@ -3,7 +3,7 @@ import time
 from flask import g, request
 from functools import wraps
 
-from cermin.exceptions import BadRequest
+from soccer.exceptions import BadRequest
 
 
 class RateLimit(object):
