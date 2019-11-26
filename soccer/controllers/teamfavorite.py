@@ -12,15 +12,19 @@ def set_favorite(actor: int, team_id: int) -> UserFavorites:
         team_id: id team yang akan difavoritkan
     """
     # check sudah difavoritkan apa belum
-    team = UserFavorites.query.filter_by().first()
+    team = TeamFavorites.query.filter(
+        TeamFavorites.user_id == actor,
+        TeamFavorites.team_id == team_id,
+    ).first()
+
     if team:
         raise BadRequest("Team sudah masuk kedalam daftar favorite")
 
     # set favorite
     favorite = TeamFavorites(actor, team_id)
     db.session.add(favorite)
-
     db.session.flush()
+
     return favorite
 
 
@@ -32,7 +36,11 @@ def set_unfavorite(actor: int, team_id: int) -> None:
         team_id: id team yang akan di unfavoritkan
     """
     # check apakah sudah di favoritkan atau belum
-    favorite = TeamFavorites.query.filter_by().first()
+    favorite = TeamFavorites.query.filter(
+        TeamFavorites.user_id == actor,
+        TeamFavorites.team_id == team_id,
+    ).first()
+
     if not favorite:
         raise BadRequest("Team tidak pernah di favorite")
 
@@ -52,7 +60,12 @@ def get_favorite(user: Users, page: int = 1, count: int = 20) -> Pagination:
     Returns:
         list team yang difavoritkan
     """
-    user_favorite = UserFavorites.query.filter_by().paginate(
+    user_favorite = TeamFavorites.query.filter(
+        TeamFavorites.user_id == auth.user.id,
+        TeamFavorites.is_deleted == 0
+    ).order_by(
+        TeamFavorites.id.desc()
+    ).paginate(
         page=page,
         per_page=count,
         error_out=False
