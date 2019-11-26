@@ -25,7 +25,30 @@ def team_list():
         Content-Type: text/javascript
 
         {
-
+            "status": 200,
+            "has_next": false,
+            "has_prev": false,
+            "total": 1,
+            "result": [
+                {
+                    "id": 1,
+                    "shortname": FCB,
+                    "fullname": Barcelona FC,
+                    "liga": {
+                        "id": 1,
+                        "name": La Liga,
+                        "nation": Spain,
+                        "image": asset.soccer-app...,
+                        "image_icon": asset.soccer-app...,
+                        "image_thumb": asset.soccer-app...,
+                    },
+                    "website": www.barcelona.com,
+                    "birhtday": 1555867523,
+                    "image": asset.soccer-app...,
+                    "image_icon": asset.soccer-app...,
+                    "image_thumb": asset.soccer-app...,
+                }
+            ]
         }
 
     :query page: pagination pag
@@ -61,13 +84,18 @@ def _entity_team_list(teams):
     for team in teams:
         result.append({
             "id": team.id,
-            "name": team.name,
+            "shortname": team.shortname,
             "fullname": team.fullname,
             "liga": {
                 "id": team.liga.id,
                 "name": team.liga.name,
                 "nation": team.liga.nation,
+                "image": team.liga.image_url,
+                "image_icon": team.liga.image_icon_url,
+                "image_thumb": team.liga.image_thumb_url,
             },
+            "website": team.website,
+            "birthday": team.birthday,
             "image": team.image_url,
             "image_icon": team.image_icon_url,
             "image_thumb": team.image_thumb_url,
@@ -93,7 +121,18 @@ def team_get_by_id(team_id):
         Content-Type: text/javascript
 
         {
-
+            "status": 200,
+            "id": 1,
+            "shortname": FCB,
+            "fullname": Barcelona FC,
+            "liga": {
+                "id": 1,
+                "name": La Liga,
+                "nation": Spain,
+                "image": asset.soccer-app...,
+                "image_icon": asset.soccer-app...,
+                "image_thumb": asset.soccer-app...,
+            }
         }
     """
     team = team_ctrl.get(team_id=team_id)
@@ -101,7 +140,7 @@ def team_get_by_id(team_id):
     response = {
         "status": 200,
         "id": team.id,
-        "name": team.name,
+        "shortname": team.name,
         "fullname": team.fullname,
         "liga": {
             "id": team.liga.id,
@@ -111,6 +150,8 @@ def team_get_by_id(team_id):
             "image_icon": team.liga.image_icon_url,
             "image_thumb": team.liga.image_thumb_url,
         },
+        "website": team.website,
+        "birthday": team.birthday,
         "image": team.image_url,
         "image_icon": team.image_icon_url,
         "image_thumb": team.image_thumb_url,
