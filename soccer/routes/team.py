@@ -140,7 +140,7 @@ def team_get_by_id(team_id):
     response = {
         "status": 200,
         "id": team.id,
-        "shortname": team.name,
+        "shortname": team.shortname,
         "fullname": team.fullname,
         "liga": {
             "id": team.liga.id,

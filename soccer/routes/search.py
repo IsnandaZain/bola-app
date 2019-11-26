@@ -28,7 +28,31 @@ def search_team():
         Content-Type: text/javascript
 
         {
-
+            "status": 200,
+            "has_next": false,
+            "has_prev": false,
+            "total": 1,
+            "result": [
+                {
+                    "status": 200,
+                    "id": 1,
+                    "shortname": FCB,
+                    "fullname": Barcelona FC,
+                    "liga": {
+                        "id": 1,
+                        "name": La Liga,
+                        "nation": Spain,
+                        "image": asset.soccer-app...,
+                        "image_icon": asset.soccer-app...,
+                        "image_thumb": asset.soccer-app...,
+                    },
+                    "website": www.barcelona.com,
+                    "birthday": 1555769584,
+                    "image": asset.soccer-app...,
+                    "image_icon": asset.soccer-app...,
+                    "image_thumb": asset.soccer-app...,
+                }
+            ]
         }
 
     :query keyword: keyword for search
@@ -75,7 +99,22 @@ def search_team():
     if teams != None:
         for team in teams.items:
             result.append({
-                
+                "id": team.id,
+                "shortname": team.shortname,
+                "fullname": team.fullname,
+                "liga": {
+                    "id": team.liga.id,
+                    "name": team.liga.name,
+                    "nation": team.liga.nation,
+                    "image": team.liga.image_url,
+                    "image_icon": team.liga.image_icon_url,
+                    "image_thumb": team.liga.image_thumb_url,
+                },
+                "website": team.website,
+                "birthday": team.birthday,
+                "image": team.image_url,
+                "image_icon": team.image_icon_url,
+                "image_thumb": team.image_thumb_url,
             })
 
 
