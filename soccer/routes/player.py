@@ -77,7 +77,7 @@ def player_list():
         "has_next": player.has_next,
         "has_prev": play.has_prev,
         "total": player.total,
-        "result": _entity_player_list(play.items)
+        "result": _entity_player_list(player.items)
     }
 
     return jsonify(response)
@@ -130,7 +130,27 @@ def player_get_by_id(player_id):
         Content-Type: text/javascript
 
         {
-
+            "status": 200,
+            "id": 1,
+            "shortname": Messi,
+            "fullname": Lionel Messi,
+            "backnumber": 10,
+            "height": 165,
+            "weight": 61,
+            "nation": Argentina,
+            "team": {
+                "id": 1,
+                "shortname": FCB,
+                "fullname": Barcelona FC,
+                "liga": La Liga,
+                "stadion": Camp Nou,
+                "image": asset.soccer-app...,
+                "image_icon": asset.soccer-app...,
+                "image_thumb": asset.soccer-app...,
+            },
+            "image": asset.soccer-app...,
+            "image_icon": asset.soccer-app...,
+            "image_thumb": asset.soccer-app...,
         }
     """
     player = player_ctrl.get(player_id=player_id)
@@ -138,13 +158,21 @@ def player_get_by_id(player_id):
     response = {
         "status": 200,
         "id": player.id,
-        "name": player.name,
+        "shortname": player.shortname,
         "fullname": player.fullname,
-        "back_number": player.back_number,
-        "club": {
-            "id": player.club.id,
-            "name": player.club.name,
-            "liga": player.club.liga,
+        "backnumber": player.backnumber,
+        "height": player.height,
+        "weight": player.weight,
+        "nation": player.nation,
+        "team": {
+            "id": player.team.id,
+            "shortname": player.team.shortname,
+            "fullname": player.team.fullname,
+            "liga": player.team.liga,
+            "stadion": player.team.stadion,
+            "image": player.team.image_url,
+            "image_icon": player.team.image_icon_url,
+            "image_thumb": player.team.image_thumb_url,
         },
         "image": player.image_url,
         "image_icon": player.image_icon_url,
