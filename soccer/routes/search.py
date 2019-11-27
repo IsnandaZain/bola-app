@@ -10,7 +10,6 @@ bp = Blueprint(__name__, 'search')
 
 
 @bp.route("/search/team")
-@ratelimit(600)
 def search_team():
     """Search user
 

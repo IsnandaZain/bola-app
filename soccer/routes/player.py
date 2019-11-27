@@ -2,12 +2,12 @@ from flask import Blueprint, request, jsonify
 
 from soccer.controllers import player as player_ctrl
 from soccer.exceptions import BadRequest, NotFound
+from soccer.libs.ratelimit import ratelimit
 
 
 bp = Blueprint(__name__, "player")
 
 @bp.route("/player", methods=["GET"])
-@ratelimit(300)
 def player_list():
     """Get list player
 
@@ -114,7 +114,6 @@ def _entity_player_list(players):
 
 
 @bp.route("/player/<int:player_id>", methods=["GET"])
-@ratelimit(300)
 def player_get_by_id(player_id):
     """Get player by id
 

@@ -1,6 +1,6 @@
 from flask_sqlalchemy import Pagination
 from soccer.exceptions import BadRequest, TeamNotFound
-from soccer.models import db, Teams
+from soccer.models import db, Team
 from soccer.models import team as team_mdl
 
 
@@ -16,16 +16,16 @@ def get_list(page: int = 1, count:int = 12, liga: str = None) -> Pagination:
         Pagination
     """
     filters = [
-        Teams.is_deleted == 0,
+        Team.is_deleted == 0,
     ]
 
     if liga:
-        filters.append(Teams.liga == liga)
+        filters.append(Team.liga == liga)
 
-    teams = Teams.query.filter(
+    teams = Team.query.filter(
         *filters
     ).order_by(
-        Teams.id.desc()
+        Team.id.desc()
     ).paginate(
         page=page,
         per_page=count,
@@ -35,7 +35,7 @@ def get_list(page: int = 1, count:int = 12, liga: str = None) -> Pagination:
     return teams
 
 
-def get(team_id: int) -> Teams:
+def get(team_id: int) -> Team:
     """Get team by id
     Args:
         team_id: id team

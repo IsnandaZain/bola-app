@@ -2,7 +2,7 @@ from flask_sqlalchemy import Pagination
 
 from string import punctuation
 
-from soccer.models import db, Teams
+from soccer.models import db, Team
 
 
 def search_team(keyword: str, page: int = 1, count: int = 12) -> Pagination:

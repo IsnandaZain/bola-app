@@ -4,7 +4,7 @@ from soccer.exceptions import BadRequest
 from soccer.models import db, TeamFavorites
 
 
-def set_favorite(actor: int, team_id: int) -> UserFavorites:
+def set_favorite(actor: int, team_id: int) -> TeamFavorites:
     """Action favorite user
 
     Args:
@@ -49,7 +49,7 @@ def set_unfavorite(actor: int, team_id: int) -> None:
     db.session.add(favorite)
 
 
-def get_favorite(user: Users, page: int = 1, count: int = 20) -> Pagination:
+def get_favorite(user: int, page: int = 1, count: int = 20) -> Pagination:
     """Get list of favorite team
 
     Args:

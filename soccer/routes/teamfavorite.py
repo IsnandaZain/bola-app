@@ -9,7 +9,6 @@ bp = Blueprint(__name__, "team_favorite")
 
 
 @bp.route("/team/favorite", methods=["POST"])
-@ratelimit(300)
 def team_favorite():
     """Favorite team
 
@@ -49,7 +48,6 @@ def team_favorite():
 
 
 @bp.route("/team/unfavorite", methods=["POST"])
-@ratelimit(300)
 def team_unfavorite():
     """Unfavorite user
 

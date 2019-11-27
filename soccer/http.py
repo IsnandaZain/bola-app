@@ -24,7 +24,7 @@ def factory(config=SoccerConfig):
                 app_instance.register_blueprint(obj)
 
     # load flask config
-    app_instance.config.from_envvar(config)
+    app_instance.config.from_object(config)
 
     # load log config
     logging.config.dictConfig(config.LOG_CONFIG)
@@ -90,3 +90,5 @@ def factory(config=SoccerConfig):
     events.register_event()
 
     return app_instance
+
+app = factory()

@@ -2,7 +2,7 @@
 import click
 from click.core import Command
 
-from cermin.libs.misc import walk_modules
+from soccer.libs.misc import walk_modules
 
 
 @click.group()

@@ -23,6 +23,9 @@ class SoccerConfig(object):
     # static url for access assets
     STORAGE_PATH = getenv("STORAGE_PATH", "/var/www/html/file")
 
+    # uglify
+    JSONIFY_PRETTYPRINT_REGULAR = getenv("JSONIFY_PRETTYPRINT_REGULAR", False, bool)
+
     # database config
     MYSQL_HOST = getenv("DB_HOST", "127.0.0.1")
     MYSQL_USER = getenv("DB_USER", "root")

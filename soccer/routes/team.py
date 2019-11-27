@@ -7,7 +7,6 @@ from soccer.exceptions import BadRequest, NotFound
 bp = Blueprint(__name__, "team")
 
 @bp.route("/team", methods=["GET"])
-@ratelimit(300)
 def team_list():
     """Get list team
 
@@ -105,7 +104,6 @@ def _entity_team_list(teams):
 
 
 @bp.route("/team/<int:team_id>", methods=["GET"])
-@ratelimit(300)
 def team_get_by_id(team_id):
     """Get team by id
 

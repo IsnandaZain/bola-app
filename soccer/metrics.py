@@ -20,12 +20,12 @@ def start_timer():
 
 def stop_timer(response):
     resp_time = time.time() - request.start_time
-    REQUEST_LATENCY.labels("soccer-app", request.method, request.url_rule, response.status_code).observer(resp_time)
+    REQUEST_LATENCY.labels("bola-app", request.method, request.url_rule, response.status_code).observe(resp_time)
     return response
 
 
 def record_request_data(response):
-    REQUEST_COUNT.labels("soccer-app", request.method, request.url_rule, response.status_code).inc()
+    REQUEST_COUNT.labels("bola-app", request.method, request.url_rule, response.status_code).inc()
     return response
 
 
