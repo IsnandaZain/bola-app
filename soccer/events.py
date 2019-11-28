@@ -31,7 +31,7 @@ def set_unicode(*args):
 def before_cursor_execute(*args):
     """Logging engine execute"""
     conn = args[0]
-    statetment = args[2]
+    statement = args[2]
     parameters = args[3]
     conn.info.setdefault("query_start_time", []).append(time.time())
 

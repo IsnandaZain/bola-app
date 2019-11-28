@@ -22,7 +22,9 @@ class Player(db.Model):
 
     created_on = db.Column(db.Integer, default=0)
 
-    team_id = db.Column(db.Integer, db.ForeignKey("team.id"))
+    is_deleted = db.Column(db.Boolean, default=0)
+
+    team_id = db.Column(db.Integer)
 
     image = db.Column(db.String(100))
 
@@ -30,7 +32,7 @@ class Player(db.Model):
 
     image_thumb = db.Column(db.String(100))
 
-    team = relationship("")
+    #team = relationship("")
 
     def __init__(self, shortname, fullname, back_number):
         """
@@ -66,3 +68,15 @@ class Player(db.Model):
     @property
     def image_thumb_url(self):
         return file.url(self.image_thumb, 'players_thumb')
+
+    @property
+    def avatar_json(self):
+        return {
+            "large": self.image,
+            "medium": self.image_icon,
+            "small": self.image_thumb,
+        }
+
+
+def get_by_id(player_id: int) -> Player:
+    return Player.query.filter_by(id=player_id).first()

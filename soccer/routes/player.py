@@ -7,6 +7,91 @@ from soccer.libs.ratelimit import ratelimit
 
 bp = Blueprint(__name__, "player")
 
+@bp.route("/player/create", methods=["POST"])
+def player_create():
+    """Create player
+
+    **endpoint**
+
+    .. sourcecode:: http
+
+        POST /player/create
+
+    **success response**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Content-Type: text/javascript
+
+        {
+            "status": 200,
+            "id": 1,
+            "shortname": "Messi",
+            "fullname": "Lionel Messi",
+            "backnumber": 10,
+            "height": 165,
+            "weight": 60,
+            "nation": Argentina,
+            "team_id": 1,
+            "avatar": {
+                "large": "",
+                "medium": "",
+                "small": "",
+            }
+        }
+
+    :form shortname: nama punggung dari pemain
+    :form fullname: nama lengkap dari pemain
+    :form backnumber: nomor punggung dari pemain
+    :form height: tinggi dari pemain
+    :form weight: berat badan pemain
+    :form nation: kebangsaan dari pemain
+    :form team_id: id team pemain
+    """
+    shortname = request.form.get("shortname")
+    fullname = request.form.get("fullname")
+    backnumber = request.form.get("backnumber")
+    height = request.form.get("height", "0")
+    weight = request.form.get("weight", "0")
+    nation = request.form.get("nation", "Indonesia")
+    team_id = request.form.get("team_id", "1")
+
+    if None in (shortname, fullname, backnumber):
+        raise BadRequest("shortname, fullname, backnumber tidak boleh kosong")
+
+    # type conversion
+    backnumber = int(backnumber)
+    height = int(height)
+    weight = int(weight)
+    team_id = int(team_id)
+
+    player = player_ctrl.create(
+        shortname=shortname,
+        fullname=fullname,
+        backnumber=backnumber,
+        team_id=team_id,
+        height=height,
+        weight=weight,
+        nation=nation
+    )
+
+    response = {
+        "status": 200,
+        "id": player.id,
+        "shortname": player.shortname,
+        "fullname": player.fullname,
+        "backnumber": player.back_number,
+        "height": player.height,
+        "weight": player.weight,
+        "nation": player.nation,
+        "team": player.team_id,
+        "avatar": player.avatar_json,
+    }
+
+    return jsonify(response)
+
+
 @bp.route("/player", methods=["GET"])
 def player_list():
     """Get list player
@@ -61,21 +146,22 @@ def player_list():
     """
     page = request.args.get("page", "1")
     count = request.args.get("count", "12")
-    team = request.args.get("team")
+    team_id = request.args.get("team_id")
 
     # type conversion
     page = int(page)
     count = int(count)
+    team_id = int(team_id)
 
-    if not team:
+    if not team_id:
         raise BadRequest("Nama team tidak boleh kosong")
 
-    player = player_ctrl.get_list(page=page, count=count, team=team)
+    player = player_ctrl.get_list(page=page, count=count, team_id=team_id)
 
     response = {
         "status": 200 if player.items != [] else 204,
         "has_next": player.has_next,
-        "has_prev": play.has_prev,
+        "has_prev": player.has_prev,
         "total": player.total,
         "result": _entity_player_list(player.items)
     }
@@ -94,19 +180,8 @@ def _entity_player_list(players):
             "height": player.height,
             "weight": player.weight,
             "nation": player.nation,
-            "team": {
-                "id": player.team.id,
-                "shortname": player.team.shortname,
-                "fullname": player.team.fullname,
-                "liga": player.team.liga,
-                "stadion": player.team.stadion,
-                "image": player.team.image_url,
-                "image_icon": player.team.image_icon_url,
-                "image_thumb": player.team.image_thumb_url,
-            },
-            "image": player.image_url,
-            "image_icon": player.image_icon_url,
-            "image_thumb": player.image_thumb_url,
+            "team_id": player.team_id,
+            "avatar": player.avatar_json,
         })
 
 
@@ -163,19 +238,8 @@ def player_get_by_id(player_id):
         "height": player.height,
         "weight": player.weight,
         "nation": player.nation,
-        "team": {
-            "id": player.team.id,
-            "shortname": player.team.shortname,
-            "fullname": player.team.fullname,
-            "liga": player.team.liga,
-            "stadion": player.team.stadion,
-            "image": player.team.image_url,
-            "image_icon": player.team.image_icon_url,
-            "image_thumb": player.team.image_thumb_url,
-        },
-        "image": player.image_url,
-        "image_icon": player.image_icon_url,
-        "image_thumb": player.image_thumb_url,
+        "team_id": player.team_id,
+        "avatar": player.avatar_json,
     }
 
     return jsonify(response)

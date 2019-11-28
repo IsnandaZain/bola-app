@@ -30,7 +30,7 @@ class SoccerConfig(object):
     MYSQL_HOST = getenv("DB_HOST", "127.0.0.1")
     MYSQL_USER = getenv("DB_USER", "root")
     MYSQL_PASS = getenv("DB_PASS", "")
-    MYSQL_DBNAME = getenv("DB_NAME", "cermin")
+    MYSQL_DBNAME = getenv("DB_NAME", "soccer")
     MYSQL_PORT = getenv("DB_PORT", 3306, int)
 
     INTERNAL_TOKEN = "bnsultjhbqyydugtjvchrioszozwxmlpcocdmjdv"

@@ -16,12 +16,14 @@ class TeamFavorites(db.Model):
 
     created_on = db.Column(db.Integer, default=0)
 
+    """
     user = relationship("Users", backref=backref("team_favorites", lazy="dynamic"),
                         primaryjoin="and_(TeamFavorites.user_id==Users.id, "
                                     "TeamFavorites.is_deleted==0)")
 
     team = relationship("Team", backref=backref("team_favorites", lazy="dynamic"))
-
+    """
+    
     def __init__(self, user_id, team_id):
         self.user_id = user_id,
         self.team_id = team_id

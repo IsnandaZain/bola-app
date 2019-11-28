@@ -4,7 +4,21 @@ from soccer.models import db, Player
 from soccer.models import player as player_mdl
 
 
-def get_list(page: int = 1, count: int = 1, team: str = None):
+def create(shortname: str, fullname: str, backnumber: int, team_id: int, height: int = 0,
+           weight: int = 0, nation: str = "Indonesia"):
+    player = Player(shortname=shortname, fullname=fullname, back_number=backnumber)
+    player.team_id = team_id
+    player.nation = nation
+    player.height = height
+    player.weight = weight
+
+    db.session.add(player)
+    db.session.flush()
+
+    return player
+
+
+def get_list(page: int = 1, count: int = 1, team_id: str = None):
     """Get player with pagination
 
     Args:
@@ -19,8 +33,8 @@ def get_list(page: int = 1, count: int = 1, team: str = None):
         Player.is_deleted == 0
     ]
 
-    if team:
-        filters.append(Player.team == team)
+    if team_id:
+        filters.append(Player.team_id == team_id)
 
     players = Player.query.filter(
         *filters
