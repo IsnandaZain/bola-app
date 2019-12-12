@@ -61,3 +61,15 @@ class Team(db.Model):
     @property
     def image_thumb_url(self):
         return file.url(self.image_thumb, 'teams_thumb')
+
+    @property
+    def avatar_json(self):
+        return {
+            "large": self.image,
+            "medium": self.image_icon,
+            "small": self.image_thumb
+        }
+
+
+def get_by_id(team_id: int) -> Team:
+    return Team.query.filter_by(id=team_id).first()

@@ -148,13 +148,13 @@ def player_list():
     count = request.args.get("count", "12")
     team_id = request.args.get("team_id")
 
+    if not team_id:
+        raise BadRequest("Nama team tidak boleh kosong")
+
     # type conversion
     page = int(page)
     count = int(count)
     team_id = int(team_id)
-
-    if not team_id:
-        raise BadRequest("Nama team tidak boleh kosong")
 
     player = player_ctrl.get_list(page=page, count=count, team_id=team_id)
 

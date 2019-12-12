@@ -6,6 +6,81 @@ from soccer.exceptions import BadRequest, NotFound
 
 bp = Blueprint(__name__, "team")
 
+@bp.route("/team/create", methods=["POST"])
+def team_create():
+    """Create team
+
+    **endpoint**
+
+    .. sourcecode:: http
+
+        POST /team/create
+
+    **success response**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Content-Type: text/javascript
+
+        {
+            status: 200,
+            id: 1,
+            shortname: FCB,
+            fullname: FC Barcelona,
+            liga: La Liga Spanyol,
+            stadion: Camp Nou,
+            website: www.fcbarcelona.com,
+            birthday: DD-MM-YYYY
+        }
+
+    :form shortname: nama pendek dari team
+    :form fullname: nama lengkap dari team
+    :form liga: nama liga yang diikuti team
+    :form stadion: nama stadion kandang team
+    :form website: website official dari team
+    :form birthday: tanggal club lahir
+    """
+    shortname = request.form.get("shortname")
+    fullname = request.form.get("fullname")
+    liga = request.form.get("liga")
+    stadion = request.form.get("stadion")
+    website = request.form.get("website")
+    birthday = request.form.get("birthday")
+
+    if None in (shortname, fullname):
+        raise BadRequest("shortname, fullname tidak boleh kosong")
+
+    if not birthday.isdigit():
+        raise BadRequest("birthday harus integer")
+
+    # type conversion
+    birthday = int(birthday)
+    
+    team = team_ctrl.create(
+        shortname=shortname,
+        fullname=fullname,
+        liga=liga,
+        stadion=stadion,
+        website=website,
+        birthday=birthday
+    )
+
+    response = {
+        "status": 200,
+        "id": team.id,
+        "shortname": team.shortname,
+        "fullname": team.fullname,
+        "liga": team.liga,
+        "stadion": team.stadion,
+        "website": team.website,
+        "birthday": team.birthday,
+        "avatar": team.avatar_json,
+    }
+
+    return jsonify(response)
+    
+
 @bp.route("/team", methods=["GET"])
 def team_list():
     """Get list team
@@ -58,12 +133,12 @@ def team_list():
     count = request.args.get("count", "12")
     liga = request.args.get("league")
 
+    if not liga:
+        raise BadRequest("Nama liga tidak boleh kosong")
+
     # type conversion
     page = int(page)
     count = int(count)
-
-    if not liga:
-        raise BadRequest("Nama liga tidak boleh kosong")
 
     team = team_ctrl.get_list(page=page, count=count, liga=liga)
 
