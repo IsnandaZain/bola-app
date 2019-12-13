@@ -264,8 +264,16 @@ def player_update(player_id):
 
         {
             "status": 200,
-            "id": 1,
             "message": "Berhasil mengupdate informasi pemain"
+            "id": 1,
+            "shortname": "Messi",
+            "fullname": "Lionel Messi",
+            "backnumber": 10,
+            "height": 165,
+            "weight": 60,
+            "team_id": 1,
+            "nation": "Argentina",
+            "status": 200,
         }
 
     :form shortname: nama punggung dari pemain
@@ -303,6 +311,8 @@ def player_update(player_id):
     )
 
     response = {
+        "status": 200,
+        "message": "Berhasil mengupdate informasi pemain",
         "id": player.id,
         "shortname": player.shortname,
         "fullname": player.fullname,
@@ -311,8 +321,6 @@ def player_update(player_id):
         "weight": player.weight,
         "team_id": player.team_id,
         "nation": player.nation,
-        "status": 200,
-        "message": "Berhasil mengupdate informasi pemain"
     }
 
     return jsonify(response)

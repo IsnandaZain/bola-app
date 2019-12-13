@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 
 from sqlalchemy.orm import relationship, backref
 
@@ -11,15 +12,17 @@ class Team(db.Model):
 
     fullname = db.Column(db.String, nullable=False)
 
-    liga = db.Column(db.String, nullable=False)
+    liga = db.Column(db.Integer, nullable=False)
 
     stadion = db.Column(db.String, nullable=False)
 
     website = db.Column(db.String, default="")
 
-    birthday = db.Column(db.String, default=0)
+    birthday = db.Column(db.String, default=None)
 
     created_on = db.Column(db.Integer, default=0)
+
+    is_deleted = db.Column(db.Boolean, default=0)
 
     image = db.Column(db.String(100))
 
@@ -27,7 +30,7 @@ class Team(db.Model):
 
     image_thumb = db.Column(db.String(100))
 
-    def __init__(self, shortname, fullname, liga):
+    def __init__(self, shortname, fullname, liga, birthday):
         """
         Args:
             shortname: shortname dari team
@@ -37,6 +40,7 @@ class Team(db.Model):
         self.shortname = shortname
         self.fullname = fullname
         self.liga = liga
+        self.birthday = birthday
 
         self.created_on = time.time()
 

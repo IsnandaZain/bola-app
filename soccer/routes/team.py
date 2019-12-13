@@ -51,11 +51,8 @@ def team_create():
     if None in (shortname, fullname):
         raise BadRequest("shortname, fullname tidak boleh kosong")
 
-    if not birthday.isdigit():
-        raise BadRequest("birthday harus integer")
-
     # type conversion
-    birthday = int(birthday)
+    liga = int(liga)
     
     team = team_ctrl.create(
         shortname=shortname,
@@ -127,18 +124,19 @@ def team_list():
 
     :query page: pagination pag
     :query count: count result per page
-    :query league: liga yang dipilih
+    :query liga: liga yang dipilih
     """
     page = request.args.get("page", "1")
     count = request.args.get("count", "12")
-    liga = request.args.get("league")
+    liga = request.args.get("liga")
 
     if not liga:
-        raise BadRequest("Nama liga tidak boleh kosong")
+        raise BadRequest("id liga tidak boleh kosong")
 
     # type conversion
     page = int(page)
     count = int(count)
+    liga = int(liga)
 
     team = team_ctrl.get_list(page=page, count=count, liga=liga)
 
@@ -156,23 +154,14 @@ def team_list():
 def _entity_team_list(teams):
     results = []
     for team in teams:
-        result.append({
+        results.append({
             "id": team.id,
             "shortname": team.shortname,
             "fullname": team.fullname,
-            "liga": {
-                "id": team.liga.id,
-                "name": team.liga.name,
-                "nation": team.liga.nation,
-                "image": team.liga.image_url,
-                "image_icon": team.liga.image_icon_url,
-                "image_thumb": team.liga.image_thumb_url,
-            },
+            "liga": team.liga,
             "website": team.website,
             "birthday": team.birthday,
-            "image": team.image_url,
-            "image_icon": team.image_icon_url,
-            "image_thumb": team.image_thumb_url,
+            "avatar": team.avatar_json,
         })
 
     return results
@@ -215,33 +204,24 @@ def team_get_by_id(team_id):
         "id": team.id,
         "shortname": team.shortname,
         "fullname": team.fullname,
-        "liga": {
-            "id": team.liga.id,
-            "name": team.liga.name,
-            "nation": team.liga.nation,
-            "image": team.liga.image_url,
-            "image_icon": team.liga.image_icon_url,
-            "image_thumb": team.liga.image_thumb_url,
-        },
+        "liga": team.liga,
         "website": team.website,
         "birthday": team.birthday,
-        "image": team.image_url,
-        "image_icon": team.image_icon_url,
-        "image_thumb": team.image_thumb_url,
+        "avatar": team.avatar_json,
     }
 
     return jsonify(response)
 
 
-@bp.route("/team/update", methods=["UPDATE"])
-def team_update():
+@bp.route("/team/update/<int:team_id>", methods=["PUT"])
+def team_update(team_id):
     """Update team
 
     **endpoint**
 
     .. sourcecode:: http
 
-        UPDATE /team/update
+        UPDATE /team/update/<int:team_id>
 
     **success response**
 
@@ -257,31 +237,46 @@ def team_update():
         }
 
     """
-    team_id = request.form.get("team_id")
-    
-
-    if not team_id:
-        raise BadRequest("team id tidak boleh kosong")
+    shortname = request.form.get("shortname")
+    fullname = request.form.get("fullname")
+    liga = request.form.get("liga")
+    stadion = request.form.get("stadion")
+    website = request.form.get("website")
+    birthday = request.form.get("birthday")
 
     # type conversion
     team_id = int(team_id)
 
+    if liga:
+        liga = int(liga)
 
     team = team_ctrl.update(
-
+        team_id=team_id,
+        shortname=shortname,
+        fullname=fullname,
+        liga=liga,
+        stadion=stadion,
+        website=website,
+        birthday=birthday,
     )
 
     response = {
-        "id": team.id,
         "status": 200,
-        "message": "Berhasil mengupdate informasi team"
+        "message": "Berhasil mengupdate informasi team",
+        "id": team.id,
+        "shortname": team.shortname,
+        "fullname": team.fullname,
+        "liga": team.liga,
+        "stadion": team.stadion,
+        "website": team.website,
+        "birthday": team.birthday,
     }
 
     return jsonify(response)
 
 
 @bp.route("/team/delete/<int:team_id>", methods=["DELETE"])
-def team_delete():
+def team_delete(team_id):
     """Delete team
 
     **endpoint**

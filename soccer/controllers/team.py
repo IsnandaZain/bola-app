@@ -4,7 +4,7 @@ from soccer.models import db, Team
 from soccer.models import team as team_mdl
 
 
-def create(shortname: str, fullname: str, liga: str, stadion: str,
+def create(shortname: str, fullname: str, liga: int, stadion: str,
            website: str, birthday: int):
     """Create a new team
 
@@ -19,10 +19,9 @@ def create(shortname: str, fullname: str, liga: str, stadion: str,
     Returns:
         Team Object
     """
-    team = Team(shortname=shortname, fullname=fullname, liga=liga)
+    team = Team(shortname=shortname, fullname=fullname, liga=liga, birthday=birthday)
     team.stadion = stadion
     team.website = website
-    team.birthday = birthday
 
     db.session.add(team)
     db.session.flush()
@@ -58,11 +57,17 @@ def update(team_id: int, shortname: str = None, fullname: str = None, liga: str 
     if fullname is not None:
         team.fullname = fullname
 
+    if liga is not None:
+        team.liga = liga
+
     if stadion is not None:
         team.stadion = stadion
 
     if website is not None:
         team.website = website
+
+    if birthday is not None:
+        team.birthday = birthday
 
     db.session.add(team)
     db.session.flush()
