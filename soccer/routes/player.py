@@ -243,3 +243,73 @@ def player_get_by_id(player_id):
     }
 
     return jsonify(response)
+
+
+@bp.route("/player/update", methods=["UPDATE"])
+def player_update():
+    """Update player
+
+    **endpoint**
+
+    .. sourcecode:: http
+
+        UPDATE /player/<int:player_id>
+
+    **success response**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Content-Type: text/javascript
+
+        {
+            "status": 200,
+            "id": 1,
+            "message": "Berhasil mengupdate informasi pemain"
+        }
+
+    :form shortname: nama punggung dari pemain
+    :form fullname: nama lengkap dari pemain
+    :form backnumber: nomor punggung dari pemain
+    :form height: tinggi dari pemain
+    :form weight: berat badan pemain
+    :form nation: kebangsaan dari pemain
+    :form team_id: id team pemain
+    """
+    player_id = request.form.get("player_id")
+    shortname = request.form.get("shortname")
+    fullname = request.form.get("fullname")
+    backnumber = request.form.get("backnumber")
+    height = request.form.get("height")
+    weight = request.form.get("weight")
+    nation = request.form.get("nation")
+    team_id = request.form.get("team_id")
+
+    if not player_id:
+        raise BadRequest("player id tidak boleh kosong")
+
+    # type conversion
+    player_id = int(player_id)
+    backnumber = int(backnumber) if backnumber else None
+    height = int(height) if height else None
+    weight = int(weight) if weight else None
+    team_id = int(team_id) if team_id else None
+
+    player = player_ctrl.update(
+        player_id=player_id,
+        shortname=shortname,
+        fullname=fullname,
+        backnumber=backnumber,
+        team_id=team_id,
+        height=height,
+        weight=weight,
+        nation=nation,
+    )
+
+    response = {
+        "id": player.id,
+        "status": 200,
+        "message": "Berhasil mengupdate informasi pemain"
+    }
+
+    return jsonify(response)

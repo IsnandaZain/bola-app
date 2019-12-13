@@ -9,12 +9,12 @@ def create(shortname: str, fullname: str, liga: str, stadion: str,
     """Create a new team
 
     Args:
-    shortname - nama pendek dari club
-    fullname - nama panjang dari club
-    liga - nama liga yang diikuti club
-    stadion - nama stadion kandang club
-    website - website official club
-    birthday - tanggal lahir club
+        shortname: nama pendek dari club
+        fullname: nama panjang dari club
+        liga: nama liga yang diikuti club
+        stadion: nama stadion kandang club
+        website: website official club
+        birthday: tanggal lahir club
 
     Returns:
         Team Object
@@ -23,6 +23,46 @@ def create(shortname: str, fullname: str, liga: str, stadion: str,
     team.stadion = stadion
     team.website = website
     team.birthday = birthday
+
+    db.session.add(team)
+    db.session.flush()
+
+    return team
+
+
+def update(team_id: int, shortname: str = None, fullname: str = None, liga: str = None,
+           stadion: str = None, website: str = None, birthday: int = None):
+    """Update team
+
+    Args:
+        team_id: id club yang di update
+        shortname: nama pendek dari club
+        fullname: nama lengkap dari club
+        liga: nama liga yang diikuti club
+        stadion: nama stadion kandang club
+        website: website official club
+        birthday: tanggal lahir club
+
+    Returns:
+        Team object
+    """
+    team = team_mdl.get_by_id(team_id=team_id)
+
+    # check apakah team exists
+    if not team:
+        raise TeamNotFound
+
+    if shortname is not None:
+        team.shortname = shortname
+
+    if fullname is not None:
+        team.fullname = fullname
+
+    if stadion is not None:
+        team.stadion = stadion
+
+    if website is not None:
+        team.website = website
 
     db.session.add(team)
     db.session.flush()

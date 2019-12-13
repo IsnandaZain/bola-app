@@ -231,3 +231,50 @@ def team_get_by_id(team_id):
     }
 
     return jsonify(response)
+
+
+@bp.route("/team/update", methods=["UPDATE"])
+def team_update():
+    """Update team
+
+    **endpoint**
+
+    .. sourcecode:: http
+
+        UPDATE /team/update
+
+    **success response**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Content-Type: text/javascript
+
+        {
+            "status": 200,
+            "id": 1,
+            "message": "Berhasil mengupdate informasi team"
+        }
+
+    """
+    team_id = request.form.get("team_id")
+    
+
+    if not team_id:
+        raise BadRequest("team id tidak boleh kosong")
+
+    # type conversion
+    team_id = int(team_id)
+
+
+    team = team_ctrl.update(
+
+    )
+
+    response = {
+        "id": team.id,
+        "status": 200,
+        "message": "Berhasil mengupdate informasi team"
+    }
+
+    return jsonify(response)

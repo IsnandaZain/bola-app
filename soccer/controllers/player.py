@@ -6,11 +6,61 @@ from soccer.models import player as player_mdl
 
 def create(shortname: str, fullname: str, backnumber: int, team_id: int, height: int = 0,
            weight: int = 0, nation: str = "Indonesia"):
+
     player = Player(shortname=shortname, fullname=fullname, back_number=backnumber)
     player.team_id = team_id
     player.nation = nation
     player.height = height
     player.weight = weight
+
+    db.session.add(player)
+    db.session.flush()
+
+    return player
+
+
+def update(player_id: int, shortname: str = None, fullname: str = None, backnumber: int = None, team_id: int = None,
+           height: int = None, weight: int = None, nation: str = None):
+    """Update event
+
+    Args:
+        player_id: id player yang di update
+        shortname: nama punggung player yang di update
+        fullname: nama lengkap player yang di update
+        backnumber: nomor punggung baru player
+        height: tinggi badan player
+        weight: berat badan player
+        nation: kebangsaan player
+    
+    Returns:
+        Player object
+    """
+    player = player_mdl.get_by_id(player_id=player_id)
+
+    # check apakah player exists
+    if not player:
+        raise PlayerNotFound
+
+    if shortname is not None:
+        player.shortname = shortname
+
+    if fullname is not None:
+        player.fullname = fullname
+
+    if backnumber is not None:
+        player.back_number = backnumber
+
+    if team_id is not None:
+        player.team_id = team_id
+
+    if height is not None:
+        player.height = height
+    
+    if weight is not None:
+        player.weight = weight
+
+    if nation is not None:
+        player.nation = nation
 
     db.session.add(player)
     db.session.flush()
