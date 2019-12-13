@@ -245,15 +245,15 @@ def player_get_by_id(player_id):
     return jsonify(response)
 
 
-@bp.route("/player/update", methods=["UPDATE"])
-def player_update():
+@bp.route("/player/update/<int:player_id>", methods=["PUT"])
+def player_update(player_id):
     """Update player
 
     **endpoint**
 
     .. sourcecode:: http
 
-        UPDATE /player/update
+        UPDATE /player/update/<int:player_id>
 
     **success response**
 
@@ -276,7 +276,6 @@ def player_update():
     :form nation: kebangsaan dari pemain
     :form team_id: id team pemain
     """
-    player_id = request.form.get("player_id")
     shortname = request.form.get("shortname")
     fullname = request.form.get("fullname")
     backnumber = request.form.get("backnumber")
@@ -284,9 +283,6 @@ def player_update():
     weight = request.form.get("weight")
     nation = request.form.get("nation")
     team_id = request.form.get("team_id")
-
-    if not player_id:
-        raise BadRequest("player id tidak boleh kosong")
 
     # type conversion
     player_id = int(player_id)
@@ -308,6 +304,13 @@ def player_update():
 
     response = {
         "id": player.id,
+        "shortname": player.shortname,
+        "fullname": player.fullname,
+        "backnumber": player.backnumber,
+        "height": player.height,
+        "weight": player.weight,
+        "team_id": player.team_id,
+        "nation": player.nation,
         "status": 200,
         "message": "Berhasil mengupdate informasi pemain"
     }

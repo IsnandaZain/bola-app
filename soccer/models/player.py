@@ -43,7 +43,7 @@ class Player(db.Model):
         """
         self.shortname = shortname
         self.fullname = fullname
-        self.back_number = back_number
+        self.backnumber = back_number
 
         self.created_on = time.time()
 

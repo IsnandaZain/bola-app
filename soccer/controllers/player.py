@@ -48,7 +48,7 @@ def update(player_id: int, shortname: str = None, fullname: str = None, backnumb
         player.fullname = fullname
 
     if backnumber is not None:
-        player.back_number = backnumber
+        player.backnumber = backnumber
 
     if team_id is not None:
         player.team_id = team_id
