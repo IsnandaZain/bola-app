@@ -253,7 +253,7 @@ def player_update():
 
     .. sourcecode:: http
 
-        UPDATE /player/<int:player_id>
+        UPDATE /player/update
 
     **success response**
 
@@ -310,6 +310,46 @@ def player_update():
         "id": player.id,
         "status": 200,
         "message": "Berhasil mengupdate informasi pemain"
+    }
+
+    return jsonify(response)
+
+
+@bp.route("/player/delete", methods=["POST"])
+def player_delete():
+    """Delete player
+
+    **endpoint**
+
+    .. sourcecode:: http
+
+        POST /player/delete
+
+    **success response**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Content-Type: text/javascript
+
+        {
+            "status": 200,
+            "message": "Berhasil menghapus player"
+        }
+    """
+    player_id = request.form.get("player_id")
+
+    if not player_id:
+        raise BadRequest("player id tidak boleh kosong")
+
+    # type conversion
+    player_id = int(player_id)
+
+    player_ctrl.delete(player_id=player_id)
+
+    response = {
+        "status": 200,
+        "message": "Berhasil menghapus pemain"
     }
 
     return jsonify(response)

@@ -114,3 +114,19 @@ def get(team_id: int) -> Team:
         raise TeamNotFound
 
     return team
+
+
+def delete(team_id: int) -> Team:
+    """Delete team by id
+    Args:
+        team_id: id team
+
+    Returns:
+    """
+    team = team_mdl.get_by_id(team_id)
+    if not team:
+        raise TeamNotFound
+
+    team.is_deleted = 1
+    db.session.add(team)
+    db.session.flush()

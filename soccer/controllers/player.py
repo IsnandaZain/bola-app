@@ -112,3 +112,19 @@ def get(player_id: int) -> Player:
         raise PlayerNotFound
 
     return player
+
+
+def delete(player_id: int) -> Player:
+    """Delete player by id
+    Args:
+        player_id: id player
+
+    Returns:
+    """
+    player = player_mdl.get_by_id(player_id)
+    if not player:
+        raise PlayerNotFound
+
+    player.is_deleted = 1
+    db.session.add(player)
+    db.session.flush()

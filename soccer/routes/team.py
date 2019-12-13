@@ -278,3 +278,43 @@ def team_update():
     }
 
     return jsonify(response)
+
+
+@bp.route("/team/delete", methods=["POST"])
+def team_delete():
+    """Delete team
+
+    **endpoint**
+
+    .. sourcecode:: http
+
+        POST /team/delete
+
+    **success response**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Content-Type: text/javascript
+
+        {
+            "status": 200,
+            "message": "Berhasil menghapus player"
+        }
+    """
+    team_id = request.form.get("team_id")
+    
+    if not team_id:
+        raise BadRequest("team id tidak boleh kosong")
+
+    # type conversion
+    team_id = int(team_id)
+
+    team_ctrl.delete(team_id=team_id)
+
+    response = {
+        "status": 200,
+        "message": "Berhasil menghapus team"
+    }
+
+    return jsonify(response)
