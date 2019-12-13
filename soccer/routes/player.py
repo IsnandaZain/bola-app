@@ -315,15 +315,15 @@ def player_update():
     return jsonify(response)
 
 
-@bp.route("/player/delete", methods=["POST"])
-def player_delete():
+@bp.route("/player/delete/<int:player_id>", methods=["DELETE"])
+def player_delete(player_id):
     """Delete player
 
     **endpoint**
 
     .. sourcecode:: http
 
-        POST /player/delete
+        POST /player/delete/<int:player_id>
 
     **success response**
 
@@ -337,11 +337,6 @@ def player_delete():
             "message": "Berhasil menghapus player"
         }
     """
-    player_id = request.form.get("player_id")
-
-    if not player_id:
-        raise BadRequest("player id tidak boleh kosong")
-
     # type conversion
     player_id = int(player_id)
 

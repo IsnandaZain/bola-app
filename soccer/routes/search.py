@@ -199,9 +199,6 @@ def search_player():
 
     # get players result
     result = []
-    if players != None:
-        for player in players.items:
-
 
     response = {
         "status": 200,
