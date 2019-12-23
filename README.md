@@ -18,6 +18,6 @@ uwsgi --module soccer.http --callable app --enable-threads --master --processes 
 
 *if fail, add --http :5000 , after run project command (to run project in port 5000)
 
-Virtualenv
+Virtualenv : 
 virtualenv -p python3 Env
 
