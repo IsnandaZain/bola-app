@@ -54,4 +54,4 @@ class NotFound(SoccerException):
     E.g. data missing, endpoint not found"""
 
     message = __doc__.strip()
-    status_coded = 404
+    status_code = 404

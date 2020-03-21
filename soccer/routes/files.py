@@ -15,11 +15,4 @@ def get_files(path_file):
 
     path_file_send = SoccerConfig.STORAGE_PATH + "/{}/{}".format(directory, filename)
 
-    response = {
-        "status": 200,
-        "message": path_file_send
-    }
-
-    #return send_file(path_file_send, attachment_filename=filename)
-
-    return jsonify(response), 400
+    return send_file(path_file_send, attachment_filename=filename)
