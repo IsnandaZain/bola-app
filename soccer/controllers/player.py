@@ -1,17 +1,49 @@
 from flask_sqlalchemy import Pagination
+
+from werkzeug.datastructures import FileStorage
+from PIL import Image, ImageOps
+
 from soccer.exceptions import BadRequest, PlayerNotFound
 from soccer.models import db, Player
 from soccer.models import player as player_mdl
 
 
-def create(shortname: str, fullname: str, backnumber: int, team_id: int, height: int = 0,
-           weight: int = 0, nation: str = "Indonesia"):
+def create(shortname: str, fullname: str, backnumber: int, team_id: int, player_avatar: FileStorage, 
+           height: int = 0, weight: int = 0, nation: str = "Indonesia"):
 
     player = Player(shortname=shortname, fullname=fullname, back_number=backnumber)
     player.team_id = team_id
     player.nation = nation
     player.height = height
     player.weight = weight
+
+    # create player avatar
+    img = Image.open(player_avatar)
+    if img.mode == "P":
+        img = img.convert("RGBA")
+    elif img.mode == "L":
+        img = img.convert("RGB")
+
+    # for transparent player avatar
+    if img.mode == "RGBA":
+        background = Image.new("RGB", img.size, (255, 255, 255))
+        background.paste(img, mask=img.split()[3])
+        img = background
+
+    # set player avatar
+    size_image = (840, 630)
+    im = ImageOps.fit(img, size_image, Image.ANTIALIAS)
+    player.set_image(im, player_avatar.filename)
+
+    # set player avatar thumbnail
+    size_thumb = (180, 135)
+    im = ImageOps.fit(img, size_thumb, Image.ANTIALIAS)
+    player.set_image_thumb(im, player_avatar.filename)
+
+    # set player avatar icon
+    size_icon = (96, 72)
+    im = ImageOps.fit(img, size_icon, Image.ANTIALIAS)
+    player.set_image_icon(im, player_avatar.filename)
 
     db.session.add(player)
     db.session.flush()

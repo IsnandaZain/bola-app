@@ -56,9 +56,10 @@ def player_create():
     weight = request.form.get("weight", "0")
     nation = request.form.get("nation", "Indonesia")
     team_id = request.form.get("team_id", "1")
+    player_avatar = request.files.get("player_avatar")
 
-    if None in (shortname, fullname, backnumber):
-        raise BadRequest("shortname, fullname, backnumber tidak boleh kosong")
+    if None in (shortname, fullname, backnumber, player_avatar):
+        raise BadRequest("shortname, fullname, backnumber, player_avatar tidak boleh kosong")
 
     # type conversion
     backnumber = int(backnumber)
@@ -73,7 +74,8 @@ def player_create():
         team_id=team_id,
         height=height,
         weight=weight,
-        nation=nation
+        nation=nation,
+        player_avatar=player_avatar,
     )
 
     response = {
@@ -81,7 +83,7 @@ def player_create():
         "id": player.id,
         "shortname": player.shortname,
         "fullname": player.fullname,
-        "backnumber": player.back_number,
+        "backnumber": player.backnumber,
         "height": player.height,
         "weight": player.weight,
         "nation": player.nation,

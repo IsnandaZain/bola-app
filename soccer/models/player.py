@@ -3,6 +3,7 @@ import time
 from sqlalchemy.orm import relationship, backref
 
 from soccer.models import db
+from soccer.libs import file
 
 
 class Player(db.Model):
@@ -72,9 +73,9 @@ class Player(db.Model):
     @property
     def avatar_json(self):
         return {
-            "large": self.image,
-            "medium": self.image_icon,
-            "small": self.image_thumb,
+            "large": self.image_url,
+            "medium": self.image_icon_url,
+            "small": self.image_thumb_url,
         }
 
 

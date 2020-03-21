@@ -8,7 +8,7 @@ from configuration import SoccerConfig
 
 bp = Blueprint(__name__, "files")
 
-@bp.route("/files/<path:path_file>")
+@bp.route("/file/<path:path_file>")
 def get_files(path_file):
     directory = path_file.split("/")[0]
     filename = path_file.split("/")[1]

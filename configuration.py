@@ -21,6 +21,7 @@ class SoccerConfig(object):
     DEBUG = getenv("DEBUG", False, bool)
 
     # static url for access assets
+    STATIC_URL = "http://127.0.0.1/file"
     STORAGE_PATH = getenv("STORAGE_PATH", "/var/www/html/file")
 
     # uglify
