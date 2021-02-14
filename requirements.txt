@@ -9,7 +9,7 @@ python-gcm==0.4
 geoip2==2.3.0
 mypy-lang==0.4.5
 python-dateutil==2.5.3
-requests==2.18.4
+requests==2.20.0
 freezegun
 fauxfactory
 flake8==3.5.0
