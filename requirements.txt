@@ -22,5 +22,5 @@ pendulum==2.0.2
 scikit-learn==0.20.0
 numpy==1.15.4
 Jinja2==2.10
-PyJWT==1.7.1
+PyJWT==2.4.0
 simplejson==3.16.0
